@@ -319,7 +319,7 @@ class MainWindow(QMainWindow):
 
     # Update Zoom Label
     def update_zoom_label(self):
-        zoom_percentage = int((self.current_zoom_level - 0.2) * 100)
+        zoom_percentage = int((self.current_zoom_level) * 100)
         self.zoom_label.setText(f"{zoom_percentage}%")
 
 # Application Entry Point
