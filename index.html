@@ -373,7 +373,7 @@ function drawSpeedMeter(currentSpeed) {
 async function performSpeedTest() {
     try {
         const startTime = Date.now();
-        const response = await fetch('http://127.0.0.1:5500/index.html', { cache: 'no-store' });
+        const response = await fetch('https://axina.netlify.app', { cache: 'no-store' });
         const endTime = Date.now();
         const fileSizeInBits = parseInt(response.headers.get('content-length')) * 8;
         const speedInMbps = (fileSizeInBits / ((endTime - startTime) / 1000)) / (1024 * 1024);
