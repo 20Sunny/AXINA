@@ -333,24 +333,60 @@
 
     <script>
 // -----------------------------------
-// Function to update the icon based on online status
-function updateStatusIcon() {
-      const statusIcon = document.getElementById('net');
-      if (navigator.onLine) {
-        statusIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M480-150q-21 0-35.5-14.5T430-200q0-21 14.5-35.5T480-250q21 0 35.5 14.5T530-200q0 21-14.5 35.5T480-150ZM254-346l-28-28q50-50 114.67-78 64.66-28 139.5-28 74.83 0 139.33 28Q684-424 734-374l-28 28q-44-44-102-69t-124-25q-66 0-124 25t-102 69ZM84-516l-28-28q81-81 189-128.5T480-720q127 0 235 47.5T904-544l-28 28q-77-77-178.5-120.5T480-680q-116 0-217.5 43.5T84-516Z"/></svg>'; // Online icon
-        statusIcon.className = 'icon online';
-      } else {
-        statusIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="m796.5-125-316-317.5q-65-.5-124.5 24.5t-100 68l-25.5-24.5q41-41 96.75-69.75T445.5-478l-161-161q-47 16.5-99.75 50.25T91.5-514.5L68-539q42-42 92-77t95-52.5L159-765l18-18 639.5 639.5-20 18.5ZM480-156.5q-20 0-33.75-13.5t-13.75-34q0-19.5 13.75-33.5t33.75-14q20 0 33.75 14T527.5-204q0 20.5-13.75 34T480-156.5Zm233.5-204-13-13-13-13-62-62q18 7.5 47.25 26t56.75 46l-16 16Zm155.5-154q-76.5-76-176.25-118.5T480-675.5q-21 0-40.75 1.5t-34.75 4l-33-33q19.5-4 45-6.25t63.5-2.25q122 0 227 45.25T894-539l-25 24.5Z"/></svg>'; // Offline icon
-        statusIcon.className = 'icon offline';
-      }
+// Speed Meter Script
+const canvas = document.getElementById('speedMeter');
+const ctx = canvas.getContext('2d');
+
+// Function to draw the speed meter
+function drawSpeedMeter(currentSpeed) {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 50;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw meter background
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0.75 * Math.PI, 2.25 * Math.PI);
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.stroke();
+    ctx.closePath();
+
+    // Draw active speed arc
+    const endAngle = (0.75 + (currentSpeed / 100) * 1.5) * Math.PI;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0.75 * Math.PI, endAngle);
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = 'rgb(67, 233, 123)';
+    ctx.stroke();
+    ctx.closePath();
+
+    // Draw center text
+    ctx.font = '10px Inter';
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${currentSpeed} Mbps`, centerX, centerY + 10);
+}
+
+// Function to perform a real speed test
+async function performSpeedTest() {
+    try {
+        const startTime = Date.now();
+        const response = await fetch('https://axina.netlify.app', { cache: 'no-store' });
+        const endTime = Date.now();
+        const fileSizeInBits = parseInt(response.headers.get('content-length')) * 8;
+        const speedInMbps = (fileSizeInBits / ((endTime - startTime) / 1000)) / (1024 * 1024);
+
+        drawSpeedMeter(Math.round(speedInMbps));
+    } catch (error) {
+        console.error('Speed test failed:', error);
+        drawSpeedMeter(0);
     }
+}
 
-    // Check status when the page loads
-    updateStatusIcon();
-
-    // Listen for online and offline events
-    window.addEventListener('online', updateStatusIcon);
-    window.addEventListener('offline', updateStatusIcon);
+// Update the speed meter periodically
+setInterval(performSpeedTest, 400);
 // -----------------------------------
         // Clock Update
         function updateClock() {
