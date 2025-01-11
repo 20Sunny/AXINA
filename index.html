@@ -48,15 +48,101 @@
             text-align: center;
         }
 
-        #clock {
+        .clock-container {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            bottom: 20px;
+            left: 30px;
             font-size: 1.2rem;
             background: rgba(0, 0, 0, 0.5);
             padding: 10px 20px;
+            text-align: center;
+            justify-content: center;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 260px; /* Fixed width */
+        }
+
+        .menu-icon {
+            position: absolute;
+            bottom: 5px;
+            left: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .menu-icon:hover {
+            background-color: #f1f1f100;
+        }
+
+        .dot {
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+            margin: 3px 0;
+        }
+
+        .menu {
+            position: absolute;
+            right: 15px;
+            background: f1f1f111;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 8px;
+            display: none;
+            z-index: 100;
+        }
+
+        .menu.show {
+            display: block;
+        }
+
+        .menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            white-space: nowrap;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .menu-item:hover {
+            background-color: #f1f1f111;
+        }
+
+        .clock {
+            font-size: 2.5rem;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+
+        .date {
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+
+        .time-separator {
+            display: inline-block;
+            animation: fade 2s infinite;
+        }
+
+        @keyframes fade {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @media (max-width: 480px) {
+            .clock-container {
+                padding: 2rem;
+                min-width: 320px;
+            }
+
+            .clock {
+                font-size: 3.5rem;
+            }
         }
 
         form {
@@ -117,7 +203,6 @@
             transform: translate3d(2px);
             background: #ffffff00;
             border: 1px solid #202255;
-            backdrop-filter: blur(2px);
             transition: all 0.5s ease-in-out;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
         }
@@ -194,46 +279,117 @@
 
         #googleAppsContainer {
             position: fixed;
-            max-width: 85vw;
+            width: 98%;
+            height: 95%;
+            border: 1px solid #fff;
+            overflow: hidden scroll;
+            backdrop-filter: blur(2px);
             display: none;
-            top: 50%; 
-            left: 50%; 
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
             flex-wrap: wrap;
             gap: 25px;
             justify-content: center;
             align-items: center;
-            padding: 25px 10px;
-            backdrop-filter: blur(3px);
+            padding: 10px 10px;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
         }
 
-        #googleAppsContainer a {
-            font-size: 1.5rem;
-            color: #fff;
+        .shortcuts {
+            width: 100%;
+            margin: 10px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            padding: 10px;
+            position: relative;
+        }
+
+        .category {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category h2 {
+            color: white;
+            margin: 0 0 20px 0;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link {
+            display: flex;
+            align-items: center;
+            padding: 12px;
             text-decoration: none;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        #googleAppsContainer a:hover {
-            background: linear-gradient(135deg, #ec5a97, #2022559d, #202255);
-            transform: scale(1.05);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+        @media (max-width: 1200px) {
+            .shortcuts {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .shortcuts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .shortcuts {
+                grid-template-columns: 1fr;
+            }
         }
 
         #toggleAppsButton {
             position: fixed;
+            z-index: 2;
             top: 20px;
             left: 20px;
             font-size: 1.8rem;
@@ -310,7 +466,8 @@
             flex-wrap: nowrap;
             gap: 5px;
             align-items: center;
-            text-align: center;      }
+            text-align: center;      
+        }
         .hidden {
             display: none;
         }
@@ -318,7 +475,19 @@
     </style>
 </head>
 <body>
-    <div id="clock"></div>
+    <div class="clock-container">
+        <div class="clock" id="clock"></div>
+        <div class="menu-icon" id="menuIcon">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+        <div class="menu" id="menu">
+            <div class="menu-item" id="formatSwitch">Switch to 24H</div>
+        </div>
+        <div class="date" id="date"></div>
+        
+    </div>
     <a id="net" aria-label="Internet Status" style="color: #fff;"></a>
     <form id="searchForm">
         <input type="text" id="urlInput" placeholder="Enter URL or Search..." autocomplete="off" name="AXINA">
@@ -355,21 +524,199 @@
 
     <!-- Google Apps Section -->
     <div id="googleAppsContainer">
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
-        <a href="https://mail.google.com/" aria-label="Gmail"><i class="fas fa-envelope"></i></a>
+        <div class="shortcuts">
+            <div class="category entertainment">
+                <h2>Entertainment</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">🎮</span>
+                        YouTube
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🎵</span>
+                        Spotify
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🎬</span>
+                        Netflix
+                    </a>
+                </div>
+            </div>
+    
+            <div class="category business">
+                <h2>Business</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">💼</span>
+                        LinkedIn
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📊</span>
+                        Twitter
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📈</span>
+                        Bloomberg
+                    </a>
+                </div>
+            </div>
+    
+            <div class="category education">
+                <h2>Education</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">📚</span>
+                        Coursera
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">✏️</span>
+                        Udemy
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🎓</span>
+                        edX
+                    </a>
+                </div>
+            </div>
+    
+            <div class="category social">
+                <h2>Social</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">👥</span>
+                        Instagram
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">💬</span>
+                        WhatsApp
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📱</span>
+                        TikTok
+                    </a>
+                </div>
+            </div>
+    
+            <div class="category news">
+                <h2>News</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">📰</span>
+                        BBC
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🌐</span>
+                        CNN
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📱</span>
+                        Reuters
+                    </a>
+                </div>
+            </div>
+            <div class="category news">
+                <h2>News</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">📰</span>
+                        BBC
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🌐</span>
+                        CNN
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📱</span>
+                        Reuters
+                    </a>
+                </div>
+            </div>
+            <div class="category news">
+                <h2>News</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">📰</span>
+                        BBC
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🌐</span>
+                        CNN
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📱</span>
+                        Reuters
+                    </a>
+                </div>
+            </div>
+            <div class="category news">
+                <h2>News</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">📰</span>
+                        BBC
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🌐</span>
+                        CNN
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📱</span>
+                        Reuters
+                    </a>
+                </div>
+            </div>
+            <div class="category news">
+                <h2>News</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">📰</span>
+                        BBC
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🌐</span>
+                        CNN
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📱</span>
+                        Reuters
+                    </a>
+                </div>
+            </div>
+            <div class="category news">
+                <h2>News</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">📰</span>
+                        BBC
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🌐</span>
+                        CNN
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📱</span>
+                        Reuters
+                    </a>
+                </div>
+            </div>
+            <div class="category news">
+                <h2>News</h2>
+                <div class="links">
+                    <a href="#" class="link">
+                        <span class="icon">📰</span>
+                        BBC
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">🌐</span>
+                        CNN
+                    </a>
+                    <a href="#" class="link">
+                        <span class="icon">📱</span>
+                        Reuters
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="qout">
@@ -384,7 +731,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#FFFFFF"><path d="M480.23-144Q440-144 412-171.77q-28-27.78-28-68Q384-280 411.77-308q27.78-28 68-28Q520-336 548-308.23q28 27.78 28 68Q576-200 548.23-172q-27.78 28-68 28ZM238-386l-68-68q62-57 140.57-89.5 78.58-32.5 169.5-32.5 90.93 0 169.43 32.5T790-454l-68 68q-48-44-109.82-69-61.83-25-132.18-25-70.35 0-132.18 25Q286-430 238-386ZM68-555 0-624q94-90 217-141t263-51q140 0 263 51t217 141l-68 69q-81-77-186.32-121T480-720q-120.36 0-225.68 44Q149-632 68-555Z"/></svg>
             You are Online
         </div>
-      </div>
+    </div>
     <script>
 // -----------------------------------
 // Function to update the icon based on online status
@@ -426,12 +773,60 @@ function updateStatusIcon() {
     window.addEventListener('offline', updateStatusIcon);
 // -----------------------------------
         // Clock Update
+        let is24Hour = false;
+        const clockElement = document.getElementById('clock');
+        const dateElement = document.getElementById('date');
+        const menuIcon = document.getElementById('menuIcon');
+        const menu = document.getElementById('menu');
+        const formatSwitch = document.getElementById('formatSwitch');
+
         function updateClock() {
             const now = new Date();
-            document.getElementById("clock").textContent = now.toLocaleTimeString();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            let timeString;
+
+            if (is24Hour) {
+                timeString = `${String(hours).padStart(2, '0')}<span class="time-separator">:</span>${minutes}<span class="time-separator">:</span>${seconds}`;
+            } else {
+                const period = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                timeString = `${hours}<span class="time-separator">:</span>${minutes}<span class="time-separator">:</span>${seconds} ${period}`;
+            }
+
+            clockElement.innerHTML = timeString;
+
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            dateElement.textContent = now.toLocaleDateString('en-US', options);
         }
-        setInterval(updateClock, 1000);
+
+        menuIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menu.classList.toggle('show');
+        });
+
+        formatSwitch.addEventListener('click', () => {
+            is24Hour = !is24Hour;
+            formatSwitch.textContent = is24Hour ? 'Switch to 12H' : 'Switch to 24H';
+            updateClock();
+            menu.classList.remove('show');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
         updateClock();
+        setInterval(updateClock, 1000);
 
         // Toggle Google Apps Display
         const toggleAppsButton = document.getElementById("toggleAppsButton");
@@ -441,6 +836,13 @@ function updateStatusIcon() {
             const isHidden = googleAppsContainer.style.display === "none" || googleAppsContainer.style.display === "";
             googleAppsContainer.style.display = isHidden ? "flex" : "none";
             toggleAppsButton.innerHTML = isHidden ? '<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#FFFFFF"><path d="M400-528q13.6 0 22.8-9.2 9.2-9.2 9.2-22.8 0-13.6-9.2-22.8-9.2-9.2-22.8-9.2-13.6 0-22.8 9.2-9.2 9.2-9.2 22.8 0 13.6 9.2 22.8 9.2 9.2 22.8 9.2Zm0 160q13.6 0 22.8-9.2 9.2-9.2 9.2-22.8 0-13.6-9.2-22.8-9.2-9.2-22.8-9.2-13.6 0-22.8 9.2-9.2 9.2-9.2 22.8 0 13.6 9.2 22.8 9.2 9.2 22.8 9.2ZM280-540q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 280q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6ZM280-380q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120-280q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6Zm160 132q13.6 0 22.8-9.2 9.2-9.2 9.2-22.8 0-13.6-9.2-22.8-9.2-9.2-22.8-9.2-13.6 0-22.8 9.2-9.2 9.2-9.2 22.8 0 13.6 9.2 22.8 9.2 9.2 22.8 9.2Zm0-132q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6Zm120 280q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-160q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6ZM480.17-132q-72.17 0-135.73-27.39-63.56-27.39-110.57-74.35-47.02-46.96-74.44-110.43Q132-407.65 132-479.83q0-72.17 27.39-135.73 27.39-63.56 74.35-110.57 46.96-47.02 110.43-74.44Q407.65-828 479.83-828q72.17 0 135.73 27.39 63.56 27.39 110.57 74.35 47.02 46.96 74.44 110.43Q828-552.35 828-480.17q0 72.17-27.39 135.73-27.39 63.56-74.35 110.57-46.96 47.02-110.43 74.44Q552.35-132 480.17-132Zm-.17-28q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm80-100q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6Zm0-108q13.6 0 22.8-9.2 9.2-9.2 9.2-22.8 0-13.6-9.2-22.8-9.2-9.2-22.8-9.2-13.6 0-22.8 9.2-9.2 9.2-9.2 22.8 0 13.6 9.2 22.8 9.2 9.2 22.8 9.2Zm-80-112Z"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#FFFFFF"><path d="M120-380q-8 0-14-6t-6-14q0-8 6-14t14-6q8 0 14 6t6 14q0 8-6 14t-14 6Zm0-160q-8 0-14-6t-6-14q0-8 6-14t14-6q8 0 14 6t6 14q0 8-6 14t-14 6Zm120 332q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0-160q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0-160q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0-160q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm160.24 332Q382-356 369-368.76q-13-12.77-13-31Q356-418 368.76-431q12.77-13 31-13Q418-444 431-431.24q13 12.77 13 31Q444-382 431.24-369q-12.77 13-31 13Zm0-160Q382-516 369-528.76q-13-12.77-13-31Q356-578 368.76-591q12.77-13 31-13Q418-604 431-591.24q13 12.77 13 31Q444-542 431.24-529q-12.77 13-31 13ZM400-208q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0-480q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0 588q-8 0-14-6t-6-14q0-8 6-14t14-6q8 0 14 6t6 14q0 8-6 14t-14 6Zm0-720q-8 0-14-6t-6-14q0-8 6-14t14-6q8 0 14 6t6 14q0 8-6 14t-14 6Zm160.24 464Q542-356 529-368.76q-13-12.77-13-31Q516-418 528.76-431q12.77-13 31-13Q578-444 591-431.24q13 12.77 13 31Q604-382 591.24-369q-12.77 13-31 13Zm0-160Q542-516 529-528.76q-13-12.77-13-31Q516-578 528.76-591q12.77-13 31-13Q578-604 591-591.24q13 12.77 13 31Q604-542 591.24-529q-12.77 13-31 13ZM560-208q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0-480q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0 588q-8 0-14-6t-6-14q0-8 6-14t14-6q8 0 14 6t6 14q0 8-6 14t-14 6Zm0-720q-8 0-14-6t-6-14q0-8 6-14t14-6q8 0 14 6t6 14q0 8-6 14t-14 6Zm160 612q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0-160q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0-160q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm0-160q-13.6 0-22.8-9.2-9.2-9.2-9.2-22.8 0-13.6 9.2-22.8 9.2-9.2 22.8-9.2 13.6 0 22.8 9.2 9.2 9.2 9.2 22.8 0 13.6-9.2 22.8-9.2 9.2-22.8 9.2Zm120 308q-8 0-14-6t-6-14q0-8 6-14t14-6q8 0 14 6t6 14q0 8-6 14t-14 6Zm0-160q-8 0-14-6t-6-14q0-8 6-14t14-6q8 0 14 6t6 14q0 8-6 14t-14 6Z"/></svg>';
+            toggleAppsButton.style.background = isHidden ? "linear-gradient(135deg, #ec5a97, #2022559d, #202255)" : "rgba(0, 0, 0, 0.2)";
+            toggleAppsButton.onmouseover = () => {
+                toggleAppsButton.style.background = isHidden ? "rgba(0, 0, 0, 0.2)" : "rgba(0, 0, 0, 0.2)";
+            };
+            toggleAppsButton.onmouseout = () => {
+                toggleAppsButton.style.background = isHidden ? "linear-gradient(135deg, #ec5a97, #2022559d, #202255)" : "rgba(0, 0, 0, 0.2)";
+            };
         });
 
         // Search Form Functionality
