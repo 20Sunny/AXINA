@@ -13,9 +13,11 @@ from PyQt5.QtWidgets import (
     QLineEdit,
     QFileDialog,
     QMessageBox,
+    QPlainTextEdit,
+    QMenuBar,
 )
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineDownloadItem, QWebEngineSettings, QWebEnginePage, QWebEngineProfile
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFont
 
 # Global variable to store the main window instance
 main_window = None
@@ -42,7 +44,6 @@ class MainWindow(QMainWindow):
         settings.setAttribute(QWebEngineSettings.JavascriptEnabled, True)
         settings.setAttribute(QWebEngineSettings.JavascriptCanOpenWindows, True)
         settings.setAttribute(QWebEngineSettings.FullScreenSupportEnabled, True)
-        # settings.setAttribute(QWebEngineSettings.WebAssemblyEnabled, True)  # Enable WebAssembly
         settings.setAttribute(QWebEngineSettings.DnsPrefetchEnabled, True)  # Enable DNS prefetching
         profile.setHttpUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
@@ -53,7 +54,7 @@ class MainWindow(QMainWindow):
         # Create tab widget
         self.tabs = QTabWidget()
         self.tabs.setDocumentMode(True)
-        self.tabs.tabBarDoubleClicked.connect(self.add_new_tab)
+        self.tabs.tabBarDoubleClicked.connect(lambda _: self.add_new_tab())
         self.tabs.currentChanged.connect(self.update_current_tab)
         self.tabs.setTabsClosable(True)
         self.tabs.tabCloseRequested.connect(self.close_current_tab)
@@ -109,12 +110,43 @@ class MainWindow(QMainWindow):
         zoom_out_btn.triggered.connect(self.zoom_out)
         navbar.addAction(zoom_out_btn)
 
-        # Current zoom level
+        #view source code
+        view_source_btn = QAction(QIcon("source.jpg"), "View Source", self)
+        view_source_btn.setShortcut('Ctrl+U')
+        view_source_btn.triggered.connect(self.view_page_source)
+        navbar.addAction(view_source_btn)
+
+        # Current zoom level Sunny@bca
         self.current_zoom_level = 1.2
 
         # Add first tab
         self.add_new_tab(QUrl("https://axina.netlify.app"), "Home")
 
+    def view_page_source(self):
+        current_browser = self.tabs.currentWidget()
+        if current_browser:
+            current_browser.page().toHtml(self.show_source_code)
+
+    def show_source_code(self, html_content):
+        # Create new window for source code
+        source_window = QMainWindow(self)
+        source_window.setWindowTitle("Page Source")
+        source_window.resize(800, 600)
+
+        # Create text edit widget
+        text_edit = QPlainTextEdit()
+        text_edit.setPlainText(html_content)
+        text_edit.setReadOnly(True)
+        
+        # Set monospace font for better code readability
+        font = QFont("Courier")
+        font.setStyleHint(QFont.Monospace)
+        text_edit.setFont(font)
+
+        source_window.setCentralWidget(text_edit)
+        source_window.show()
+
+    # ... (rest of your existing methods remain exactly the same)
     def create_new_tab_return_view(self):
         browser = QWebEngineView()
         page = WebEnginePage(browser)
@@ -135,7 +167,7 @@ class MainWindow(QMainWindow):
     def add_new_tab(self, qurl=None, label="New Tab"):
         if qurl is None:
             qurl = QUrl("https://axina.netlify.app")
-        elif isinstance(qurl, bool):  # Handle case where boolean is passed
+        elif isinstance(qurl, bool):
             qurl = QUrl("https://axina.netlify.app")
         elif not isinstance(qurl, QUrl):
             qurl = QUrl(qurl)
