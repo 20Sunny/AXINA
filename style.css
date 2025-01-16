@@ -5,12 +5,14 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    scrollbar-width: thin;
+    scrollbar-color: #6BAF8D #232E33;
 }
 
 body {
     margin: 0;
     padding: 0;
-    background: url(https://axina.netlify.app/pxfuel.jpg);
+    background: url(https://axina.netlify.app/pxfuel.jpg/n);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: bottom center;
@@ -121,12 +123,12 @@ p {
 
 .time-separator {
     display: inline-block;
-    animation: fade 2s infinite;
+    animation: fade 1s infinite;
 }
 
 @keyframes fade {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    50% { opacity: 0.1; }
 }
 
 @media (max-width: 480px) {
@@ -296,6 +298,7 @@ button:hover {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    overflow: hidden;
 }
 
 .shortcuts {
@@ -315,7 +318,6 @@ button:hover {
     border-radius: 16px;
     padding: 20px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .category h2 {
@@ -343,14 +345,11 @@ button:hover {
     color: white;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .link:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: translateX(5px);
-    border-color: rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
