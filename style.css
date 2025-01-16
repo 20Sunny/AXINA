@@ -407,6 +407,25 @@ button:hover {
 
 #net {
     position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 1.8rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sea {
+    position: fixed;
     bottom: 20px;
     right: 20px;
     font-size: 1.8rem;
