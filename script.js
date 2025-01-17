@@ -116,3 +116,109 @@ function updateStatusIcon() {
             const url = input.startsWith("http://") || input.startsWith("https://") ? input : "https://www.google.com/search?q=" + encodeURIComponent(input);
             window.location.href = url;
         });
+
+// wheather open & close
+document.querySelector('.sea.icon').addEventListener('click', function () {
+    document.querySelector('.card').classList.remove('hidden');
+});
+
+document.querySelector('.close').addEventListener('click', function () {
+    document.querySelector('.card').classList.add('hidden');
+});
+
+// Weather API workings--------------------------------------------------------------------------------------------------------------------------------
+let weather = {
+    apiKey: "67b92f0af5416edbfe58458f502b0a31",
+    fetchWeatherByCity: function (city) {
+        fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${this.apiKey}`
+        )
+            .then((response) => {
+                if (!response.ok) {
+                    alert("No weather found.");
+                    throw new Error("No weather found.");
+                }
+                return response.json();
+            })
+            .then((data) => this.displayWeather(data));
+    },
+
+    fetchWeatherByCoords: function (lat, lon) {
+        fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`
+        )
+            .then((response) => {
+                if (!response.ok) {
+                    this.showSearchInterface();
+                    throw new Error("No weather found.");
+                }
+                return response.json();
+            })
+            .then((data) => this.displayWeather(data));
+    },
+
+    displayWeather: function (data) {
+        const { name } = data;
+        const { icon, description } = data.weather[0];
+        const { temp, humidity } = data.main;
+        const { speed } = data.wind;
+        document.querySelector(".city").innerText = "Weather in " + name;
+        document.querySelector(".iconi").src =
+            "https://openweathermap.org/img/wn/" + icon + ".png";
+        document.querySelector(".description").innerText = description;
+        document.querySelector(".temp").innerText = temp + "°C";
+        document.querySelector(".humidity").innerText =
+            "Humidity : " + humidity + "%";
+        document.querySelector(".wind").innerText =
+            "Wind speed : " + speed + " km/h";
+        document.querySelector(".weather").classList.remove("loading");
+        document.querySelector("#searchPrompt").style.display = "none";
+        document.querySelector(".weather").style.display = "block";
+    },
+
+    showSearchInterface: function() {
+        document.querySelector(".weather").style.display = "none";
+        document.querySelector("#searchPrompt").style.display = "block";
+    },
+
+    search: function () {
+        const searchValue = document.querySelector(".search-bar").value;
+        if (searchValue) {
+            this.fetchWeatherByCity(searchValue);
+        }
+    },
+
+    getLocation: function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    this.fetchWeatherByCoords(lat, lon);
+                },
+                (error) => {
+                    console.error(error);
+                    this.showSearchInterface();
+                }
+            );
+        } else {
+            this.showSearchInterface();
+        }
+    }
+};
+
+// Search button click event
+document.querySelector(".search-btn").addEventListener("click", function () {
+    weather.search();
+});
+
+// Enter key press event
+document.querySelector(".search-bar").addEventListener("keyup", function (event) {
+    if (event.key == "Enter") {
+        weather.search();
+    }
+});
+
+// Get location automatically when page loads
+weather.getLocation();
+// ----------------------------------------------------------------------------------------------------------------------------------------------------
