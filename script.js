@@ -129,6 +129,17 @@ document.querySelector('.close').addEventListener('click', function () {
 // Weather API workings--------------------------------------------------------------------------------------------------------------------------------
 let weather = {
     apiKey: "67b92f0af5416edbfe58458f502b0a31",
+    
+    svgIcons: {
+        humidity: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M559.88-286q14.12 0 24.12-9.88 10-9.88 10-24T584.12-344q-9.88-10-24-10T536-344.12q-10 9.88-10 24t9.88 24.12q9.88 10 24 10ZM378-279l223-223-19-20-224 224 20 19Zm21.88-167q14.12 0 24.12-9.88 10-9.88 10-24T424.12-504q-9.88-10-24-10T376-504.12q-10 9.88-10 24t9.88 24.12q9.88 10 24 10Zm79.94 314Q365-132 288.5-211.1T212-408q0-82 66.5-182.5T480-812q135 121 201.5 221.5T748-408q0 117.8-76.68 196.9-76.69 79.1-191.5 79.1Zm.18-28q104 0 172-70.5T720-408q0-73-60.5-165T480-774Q361-665 300.5-573T240-408q0 107 68 177.5T480-160Zm0-312Z"/></svg>`,
+        
+        wind: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M460-198q-32 0-56.5-19.5T370-266h30q8 18 24 29t36 11q27 0 46.5-19.5T526-292q0-27-19.5-46.5T460-358H106v-28h354q39 0 66.5 27.5T554-292q0 39-27.5 66.5T460-198ZM106-574v-28h514q36 0 61-25t25-61q0-36-25-61t-61-25q-30 0-52 17t-30 43h-30q9-39 40-63.5t72-24.5q48 0 81 33t33 81q0 48-33 81t-81 33H106Zm660 306v-30q26-8 43-30t17-52q0-36-25-61t-61-25H106v-28h634q48 0 81 33t33 81q0 41-24.5 72T766-268Z"/></svg>`,
+        
+        pressure: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M212-464v-28h536v28H212Zm0-108v-28h536v28H212Zm254 440v-176l-90 90-20-20 124-124 124 124-20 20-90-90v176h-28Zm14-570L356-826l20-20 90 90v-176h28v176l90-90 20 20-124 124Z"/></svg>`,
+        
+        aqi: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="m730-287-23-35q-17 9-35 14t-38 5q-66 0-111.5-45.5T477-460q0-66 45.5-111.5T633-617q65 0 110 46t45 111q0 36-15 67.5T730-338l23 35-23 16Zm-558-23 116-300h33l118 300h-32l-28-74H232l-28 74h-32Zm461-21q15 0 29.5-3.5T691-346l-36-54 23-16 36 54q21-19 32.5-44t11.5-54q0-53-36-91t-89-38q-53 0-89.5 37.5T507-460q0 54 36.5 91.5T633-331Zm-391-78h128l-63-163h-4l-61 163Z"/></svg>`
+    },
+
     fetchWeatherByCity: function (city) {
         fetch(
             `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${this.apiKey}`
@@ -140,37 +151,98 @@ let weather = {
                 }
                 return response.json();
             })
-            .then((data) => this.displayWeather(data));
+            .then((data) => {
+                const lat = data.coord.lat;
+                const lon = data.coord.lon;
+                return Promise.all([
+                    Promise.resolve(data),
+                    fetch(
+                        `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${this.apiKey}`
+                    ).then(response => response.json())
+                ]);
+            })
+            .then(([weatherData, aqiData]) => {
+                this.displayWeather(weatherData, aqiData);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                this.showSearchInterface();
+            });
     },
 
     fetchWeatherByCoords: function (lat, lon) {
-        fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`
-        )
-            .then((response) => {
-                if (!response.ok) {
-                    this.showSearchInterface();
-                    throw new Error("No weather found.");
-                }
+        Promise.all([
+            fetch(
+                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`
+            ).then(response => {
+                if (!response.ok) throw new Error("No weather found.");
                 return response.json();
+            }),
+            fetch(
+                `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${this.apiKey}`
+            ).then(response => response.json())
+        ])
+            .then(([weatherData, aqiData]) => {
+                this.displayWeather(weatherData, aqiData);
             })
-            .then((data) => this.displayWeather(data));
+            .catch(error => {
+                console.error("Error:", error);
+                this.showSearchInterface();
+            });
     },
 
-    displayWeather: function (data) {
-        const { name } = data;
-        const { icon, description } = data.weather[0];
-        const { temp, humidity } = data.main;
-        const { speed } = data.wind;
+    getAQIDescription: function(aqi) {
+        const aqiDescriptions = {
+            1: "Good",
+            2: "Fair",
+            3: "Moderate",
+            4: "Poor",
+            5: "Very Poor"
+        };
+        return aqiDescriptions[aqi] || "Unknown";
+    },
+
+    displayWeather: function (weatherData, aqiData) {
+        const { name } = weatherData;
+        const { icon, description } = weatherData.weather[0];
+        const { temp, humidity, pressure } = weatherData.main;
+        const { speed } = weatherData.wind;
+        const aqi = aqiData.list[0].main.aqi;
+        
         document.querySelector(".city").innerText = "Weather in " + name;
         document.querySelector(".iconi").src =
             "https://openweathermap.org/img/wn/" + icon + ".png";
         document.querySelector(".description").innerText = description;
         document.querySelector(".temp").innerText = temp + "°C";
-        document.querySelector(".humidity").innerText =
-            "Humidity : " + humidity + "%";
-        document.querySelector(".wind").innerText =
-            "Wind speed : " + speed + " km/h";
+        
+        // Update humidity with icon
+        document.querySelector(".humidity").innerHTML = 
+            `<div class="weather-item">
+                ${this.svgIcons.humidity} : 
+                <span>${humidity}%</span>
+            </div>`;
+        
+        // Update pressure with icon
+        document.querySelector(".pressure").innerHTML = 
+            `<div class="weather-item">
+                ${this.svgIcons.pressure} : 
+                <span>${pressure} hPa</span>
+            </div>`;
+        
+        // Update wind with icon
+        document.querySelector(".wind").innerHTML = 
+            `<div class="weather-item">
+                ${this.svgIcons.wind} : 
+                <span>${speed} km/h</span>
+            </div>`;
+        
+        // Update AQI with icon
+        document.querySelector(".aqi").innerHTML = 
+            `<div class="weather-item">
+                ${this.svgIcons.aqi} : 
+                <span>${this.getAQIDescription(aqi)} (AQI: ${aqi})</span>
+            </div>`;
+        
         document.querySelector(".weather").classList.remove("loading");
         document.querySelector("#searchPrompt").style.display = "none";
         document.querySelector(".weather").style.display = "block";
