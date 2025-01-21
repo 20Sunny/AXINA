@@ -137,7 +137,13 @@ let weather = {
         
         pressure: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M212-464v-28h536v28H212Zm0-108v-28h536v28H212Zm254 440v-176l-90 90-20-20 124-124 124 124-20 20-90-90v176h-28Zm14-570L356-826l20-20 90 90v-176h28v176l90-90 20 20-124 124Z"/></svg>`,
         
-        aqi: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="m730-287-23-35q-17 9-35 14t-38 5q-66 0-111.5-45.5T477-460q0-66 45.5-111.5T633-617q65 0 110 46t45 111q0 36-15 67.5T730-338l23 35-23 16Zm-558-23 116-300h33l118 300h-32l-28-74H232l-28 74h-32Zm461-21q15 0 29.5-3.5T691-346l-36-54 23-16 36 54q21-19 32.5-44t11.5-54q0-53-36-91t-89-38q-53 0-89.5 37.5T507-460q0 54 36.5 91.5T633-331Zm-391-78h128l-63-163h-4l-61 163Z"/></svg>`
+        aqi: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="m730-287-23-35q-17 9-35 14t-38 5q-66 0-111.5-45.5T477-460q0-66 45.5-111.5T633-617q65 0 110 46t45 111q0 36-15 67.5T730-338l23 35-23 16Zm-558-23 116-300h33l118 300h-32l-28-74H232l-28 74h-32Zm461-21q15 0 29.5-3.5T691-346l-36-54 23-16 36 54q21-19 32.5-44t11.5-54q0-53-36-91t-89-38q-53 0-89.5 37.5T507-460q0 54 36.5 91.5T633-331Zm-391-78h128l-63-163h-4l-61 163Z"/></svg>`,
+
+        city: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M226-164v-508h160v-146l94-88 94 88v306h160v348H226Zm28-28h132v-132H254v132Zm0-160h132v-132H254v132Zm0-160h132v-132H254v132Zm160 320h132v-132H414v132Zm0-160h132v-132H414v132Zm0-160h132v-132H414v132Zm0-160h132v-132H414v132Zm160 480h132v-132H574v132Zm0-160h132v-132H574v132Z"/></svg>`,
+
+        visible: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M480.24-364q56.76 0 96.26-39.74 39.5-39.73 39.5-96.5 0-56.76-39.74-96.26-39.73-39.5-96.5-39.5-56.76 0-96.26 39.74-39.5 39.73-39.5 96.5 0 56.76 39.74 96.26 39.73 39.5 96.5 39.5Zm-.24-28q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm.14 140Q355-252 252-319.5 149-387 96-500q53-113 155.86-180.5 102.85-67.5 228-67.5Q605-748 708-680.5 811-613 864-500q-53 113-155.86 180.5-102.85 67.5-228 67.5ZM480-500Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z"/></svg>`,
+
+        map: `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="m334-334 218-74 74-218-218 74-74 218Zm145.76-106q-16.76 0-28.26-11.74-11.5-11.73-11.5-28.5 0-16.76 11.74-28.26 11.73-11.5 28.5-11.5 16.76 0 28.26 11.74 11.5 11.73 11.5 28.5 0 16.76-11.74 28.26-11.73 11.5-28.5 11.5Zm.41 308q-72.17 0-135.73-27.39-63.56-27.39-110.57-74.35-47.02-46.96-74.44-110.43Q132-407.65 132-479.83q0-72.17 27.39-135.73 27.39-63.56 74.35-110.57 46.96-47.02 110.43-74.44Q407.65-828 479.83-828q72.17 0 135.73 27.39 63.56 27.39 110.57 74.35 47.02 46.96 74.44 110.43Q828-552.35 828-480.17q0 72.17-27.39 135.73-27.39 63.56-74.35 110.57-46.96 47.02-110.43 74.44Q552.35-132 480.17-132Zm-.17-28q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>`
     },
 
     fetchWeatherByCity: function (city) {
@@ -200,60 +206,99 @@ let weather = {
             5: "Very Poor"
         };
         return aqiDescriptions[aqi] || "Unknown";
-    },
+        },
 
-    displayWeather: function (weatherData, aqiData) {
+        displayWeather: function (weatherData, aqiData) {
         const { name } = weatherData;
         const { icon, description } = weatherData.weather[0];
-        const { temp, humidity, pressure } = weatherData.main;
-        const { speed } = weatherData.wind;
+        let { temp, humidity, pressure} = weatherData.main;
+        let visibility = weatherData.visibility;
+        let { speed } = weatherData.wind;
         const aqi = aqiData.list[0].main.aqi;
-        
-        document.querySelector(".city").innerText = "Weather in " + name;
-        document.querySelector(".iconi").src =
-            "https://openweathermap.org/img/wn/" + icon + ".png";
+
+        let isCelsius = true;
+
+        function updateTemperatureAndWind() {
+
+            const lat = weatherData.coord.lat;
+            const lon = weatherData.coord.lon;
+            document.querySelector(".points").innerHTML = 
+                `<a class="flex-center" href="https://www.google.com/maps?q=${lat},${lon}">${weather.svgIcons.map}</a>
+                </div>`;
+
+            if (isCelsius) {
+            document.querySelector(".temp").innerText = temp + "°C";
+            document.querySelector(".wind").innerHTML = 
+                `<div class="weather-item">
+                ${weather.svgIcons.wind} : 
+                <span>${speed} km/h</span>
+                </div>`;
+            document.querySelector(".Visibility").innerHTML = 
+                `<div class="weather-item">
+                ${weather.svgIcons.visible} : 
+                <span>${(visibility / 1000).toFixed(2)} km</span>
+                </div>`;
+            } else {
+            const tempF = (temp * 9/5) + 32;
+            const speedMph = speed * 0.621371;
+            const visibilityMiles = visibility * 0.000621371;
+            document.querySelector(".temp").innerText = tempF.toFixed(2) + "°F";
+            document.querySelector(".wind").innerHTML = 
+                `<div class="weather-item">
+                ${weather.svgIcons.wind} : 
+                <span>${speedMph.toFixed(2)} mph</span>
+                </div>`;
+            document.querySelector(".Visibility").innerHTML = 
+                `<div class="weather-item">
+                ${weather.svgIcons.visible} : 
+                <span>${visibilityMiles.toFixed(2)} miles</span>
+                </div>`;
+            }
+        }
+
+        document.querySelector(".city").innerHTML = `${this.svgIcons.city} : ` + name;
+        document.querySelector(".iconi").style.backgroundImage =
+            "url('https://openweathermap.org/img/wn/" + icon + ".png')";
         document.querySelector(".description").innerText = description;
-        document.querySelector(".temp").innerText = temp + "°C";
+        updateTemperatureAndWind();
         
         // Update humidity with icon
         document.querySelector(".humidity").innerHTML = 
             `<div class="weather-item">
-                ${this.svgIcons.humidity} : 
-                <span>${humidity}%</span>
+            ${this.svgIcons.humidity} : 
+            <span>${humidity}%</span>
             </div>`;
         
         // Update pressure with icon
         document.querySelector(".pressure").innerHTML = 
             `<div class="weather-item">
-                ${this.svgIcons.pressure} : 
-                <span>${pressure} hPa</span>
-            </div>`;
-        
-        // Update wind with icon
-        document.querySelector(".wind").innerHTML = 
-            `<div class="weather-item">
-                ${this.svgIcons.wind} : 
-                <span>${speed} km/h</span>
+            ${this.svgIcons.pressure} : 
+            <span>${pressure} hPa</span>
             </div>`;
         
         // Update AQI with icon
         document.querySelector(".aqi").innerHTML = 
             `<div class="weather-item">
-                ${this.svgIcons.aqi} : 
-                <span>${this.getAQIDescription(aqi)} (AQI: ${aqi})</span>
+            ${this.svgIcons.aqi} : 
+            <span>${this.getAQIDescription(aqi)} (AQI: ${aqi})</span>
             </div>`;
         
         document.querySelector(".weather").classList.remove("loading");
         document.querySelector("#searchPrompt").style.display = "none";
         document.querySelector(".weather").style.display = "block";
-    },
 
-    showSearchInterface: function() {
+        document.querySelector(".temp-style").addEventListener("click", () => {
+            isCelsius = !isCelsius;
+            updateTemperatureAndWind();
+        });
+        },
+
+        showSearchInterface: function() {
         document.querySelector(".weather").style.display = "none";
         document.querySelector("#searchPrompt").style.display = "block";
-    },
+        },
 
-    search: function () {
+        search: function () {
         const searchValue = document.querySelector(".search-bar").value;
         if (searchValue) {
             this.fetchWeatherByCity(searchValue);
@@ -293,4 +338,8 @@ document.querySelector(".search-bar").addEventListener("keyup", function (event)
 
 // Get location automatically when page loads
 weather.getLocation();
+// Map button click event to get current location
+document.querySelector(".maps").addEventListener("click", function () {
+    weather.getLocation();
+});
 // ----------------------------------------------------------------------------------------------------------------------------------------------------

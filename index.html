@@ -49,7 +49,7 @@
 </script>
 
     <title>AXINA</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://axina.netlify.app/style.css">
 </head>
 <style>
 #googleAppsContainer::-webkit-scrollbar {
@@ -310,16 +310,26 @@
     <div class="card hidden">
             <div class="search">
                 <input type="text" class="search-bar" id="urlInput" placeholder="Search location" autocomplete="off" name="AXINA">
+                <button class="flex-center maps"><svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#FFFFFF"><path d="M466-120v-52q-125-11-204-90t-90-204h-52v-28h52q11-125 90-204t204-90v-52h28v52q125 11 204 90t90 204h52v28h-52q-11 125-90 204t-204 90v52h-28Zm14-80q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-172q-44.55 0-76.27-31.73Q372-435.45 372-480t31.73-76.28Q435.45-588 480-588t76.28 31.72Q588-524.55 588-480t-31.72 76.27Q524.55-372 480-372Zm0-28q33 0 56.5-23.5T560-480q0-33-23.5-56.5T480-560q-33 0-56.5 23.5T400-480q0 33 23.5 56.5T480-400Zm0-80Z"/></svg></button>
                 <button class="search-btn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#FFFFFF"><path d="M778-164 528-414q-30 26-69 40t-77 14q-92.23 0-156.12-63.84-63.88-63.83-63.88-156Q162-672 225.84-736q63.83-64 156-64Q474-800 538-736.12q64 63.89 64 156.12 0 41-15 80t-39 66l250 250-20 20ZM382-388q81 0 136.5-55.5T574-580q0-81-55.5-136.5T382-772q-81 0-136.5 55.5T190-580q0 81 55.5 136.5T382-388Z"/></svg></button>
             </div>
             <div id="searchPrompt" class="search-prompt" style="display: none;"></div>
             <div class="mains weather loading">
-                <h2 class="city" style="margin: 0;"></h2>
-                <h1 class="temp"></h1>
                 <div class="flexi">
-                    <img src="" alt="" class="iconi" />
-                    <div class="description"></div>
+                    <div class="flexi" style="margin: 0%;gap: 0%;">
+                        <div class="iconi">
+                        </div>
+                        <div class="description"></div>
+                    </div>
+                    <h2 class="city" style="margin: 0;font-size: 18px;"></h2>
+                    <div class="Visibility"></div>
                 </div>
+                <div class="flexi">
+                    <div class="temp-style"><img height="24px" width="24px" src="https://cdn-icons-png.flaticon.com/512/8833/8833195.png" alt="" srcset=""></div>
+                    <div class="temp"></div>
+                    <button class="temp-style points flex-center"></button>
+                </div>
+                <div class="temp hidden"></div>
                 <div class="weather-place">
                     <div class="weather-status">
                         <div class="wind"></div>
@@ -348,8 +358,5 @@
         </div>
     </div>
 </body>
-<script>
-
-</script>
-<script src="./script.js"></script>
+<script src="https://axina.netlify.app/script.js"></script>
 </html>
