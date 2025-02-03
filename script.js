@@ -251,7 +251,7 @@ let weather = {
             document.querySelector(".Visibility").innerHTML = 
                 `<div class="weather-item">
                 ${weather.svgIcons.visible} : 
-                <span>${visibilityMiles.toFixed(2)} miles</span>
+                <span>${visibilityMiles.toFixed(2)} ml</span>
                 </div>`;
             }
         }
@@ -300,6 +300,8 @@ let weather = {
 
         search: function () {
         const searchValue = document.querySelector(".search-bar").value;
+        // make placeholder &{city, state, country} if city got search
+        document.querySelector(".search-bar").placeholder = `${searchValue}`;
         if (searchValue) {
             this.fetchWeatherByCity(searchValue);
         }
